@@ -4,18 +4,20 @@ import java.util.List;
 import java.util.Map;
 
 import dto.RecipeDTO;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class RecipeScreen extends FlowPane {
+public class RecipeScreen extends VBox {
 
 	private Label title;
 	private Text description;
 	private Label cookingTime;
 	private ListView<String> ingredients;
-	private ListView<String> instructions;
+	private ListView<Label> instructions;
 
 	public RecipeScreen(RecipeDTO recipe) {
 		buildGUI(recipe);
@@ -35,10 +37,13 @@ public class RecipeScreen extends FlowPane {
 		}
 
 		cookingTime = buildCookingTime(recipe.cookingTime());
+
 		ingredients = buildIngredients(recipe.ingredientAmounts());
 		instructions = buildInstructions(recipe.instructions());
+		FlowPane fPane = new FlowPane();
+		fPane.getChildren().addAll(ingredients, instructions);
 
-		getChildren().addAll(cookingTime, ingredients, instructions);
+		getChildren().addAll(cookingTime, fPane);
 	}
 
 	private Label buildTitle(String name) {
@@ -62,14 +67,19 @@ public class RecipeScreen extends FlowPane {
 		return lv;
 	}
 
-	private ListView<String> buildInstructions(List<String> list) {
-		ListView<String> lv = new ListView<String>();
+	private ListView<Label> buildInstructions(List<String> list) {
+		ListView<Label> lv = new ListView<Label>();
+		lv.setPrefWidth(250);
 		int stepNumber = 1;
 		for (String instruction : list) {
-			String step = String.format("%d) %s", stepNumber, instruction);
-			lv.getItems().add(step);
+			Label text = new Label(String.format("%d) %s", stepNumber, instruction));
+			text.setPrefWidth(lv.getPrefWidth());
+			text.setPadding(new Insets(5));
+			text.setWrapText(true);
+			lv.getItems().add(text);
 			stepNumber++;
 		}
+
 		return lv;
 	}
 
