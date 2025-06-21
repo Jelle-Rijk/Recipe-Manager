@@ -15,6 +15,7 @@ public class RecipeController {
 
 	public RecipeController() {
 		rRepo = new RecipeRepo();
+		setDefaults();
 	}
 
 	private static String DEFAULT_NAME = "Pasta Carbonara";
@@ -23,7 +24,7 @@ public class RecipeController {
 	private static Map<String, Integer> DEFAULT_INGREDIENTS;
 	private static List<String> DEFAULT_INSTRUCTIONS;
 
-	static void setDefaults() {
+	private void setDefaults() {
 		DEFAULT_INGREDIENTS = new HashMap<String, Integer>();
 		DEFAULT_INGREDIENTS.put("Bacon", 300);
 		DEFAULT_INGREDIENTS.put("Spaghetti", 200);
@@ -36,12 +37,12 @@ public class RecipeController {
 		DEFAULT_INSTRUCTIONS.add("Add pasta to bacon and pour egg on it.");
 		DEFAULT_INSTRUCTIONS
 				.add("Whisk thoroughly and pour some pasta water over the spaghetti until you get a smooth sauce.");
+		addRecipe(new RecipeDTO(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COOKING_TIME, DEFAULT_INGREDIENTS,
+				DEFAULT_INSTRUCTIONS));
 	}
 
 	public void addRecipe(RecipeDTO dto) {
-		setDefaults();
-		rRepo.addRecipe(new Recipe(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COOKING_TIME, DEFAULT_INGREDIENTS,
-				DEFAULT_INSTRUCTIONS));
+		rRepo.addRecipe(RecipeDTO.convertToRecipe(dto));
 	}
 
 	/*
@@ -49,21 +50,6 @@ public class RecipeController {
 	 */
 	public RecipeDTO getRecipe(String name) {
 		return RecipeDTO.convertToDTO(rRepo.getRecipe(name));
-	}
-
-	/*
-	 * UPDATE
-	 */
-	public void updateTitle() {
-
-	}
-
-	public void updateDescription() {
-
-	}
-
-	public void updateCookingTime() {
-
 	}
 
 }

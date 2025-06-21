@@ -3,6 +3,8 @@ package gui;
 import controllers.DomainController;
 import controllers.RecipeController;
 import dto.RecipeDTO;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
 public class MainScreen extends BorderPane {
@@ -17,8 +19,20 @@ public class MainScreen extends BorderPane {
 
 	private void buildTestGUI() {
 		RecipeController rc = dc.getRecipeController();
-		rc.addRecipe(null);
 		RecipeDTO recipe = rc.getRecipe("Pasta Carbonara");
+
 		setCenter(new RecipeView(recipe));
+		Button editRecipe = new Button("Edit recipe");
+		editRecipe.setOnAction(e -> editRecipe(recipe));
+		setBottom(editRecipe);
+	}
+
+	private void editRecipe(RecipeDTO recipe) {
+		EditRecipeScreen screen = new EditRecipeScreen(recipe, dc);
+		Scene scene = getScene();
+		scene.setRoot(screen);
+		scene.getWindow().setWidth(screen.getWidth());
+		scene.getWindow().setHeight(screen.getHeight());
+
 	}
 }
