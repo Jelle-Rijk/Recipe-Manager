@@ -1,28 +1,25 @@
-package domain;
+package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import domain.recipes.Recipe;
+import domain.recipes.RecipeRepo;
 import dto.RecipeDTO;
 
-public class DomainController {
+public class RecipeController {
+	private Recipe currentRecipe;
 	private RecipeRepo rRepo;
 
-	public DomainController() {
+	public RecipeController() {
 		rRepo = new RecipeRepo();
 	}
 
-	/*
-	 * RECIPES
-	 */
-	/*
-	 * CREATE
-	 */
 	private static String DEFAULT_NAME = "Pasta Carbonara";
 	private static String DEFAULT_DESCRIPTION = "Homecooked Italian deliciousness";
-	private static int DEFAULT_COOKING_TIME = 30;
+	private static int DEFAULT_COOKING_TIME = 90;
 	private static Map<String, Integer> DEFAULT_INGREDIENTS;
 	private static List<String> DEFAULT_INSTRUCTIONS;
 
@@ -53,4 +50,5 @@ public class DomainController {
 	public RecipeDTO getRecipe(String name) {
 		return RecipeDTO.convertToDTO(rRepo.getRecipe(name));
 	}
+
 }
