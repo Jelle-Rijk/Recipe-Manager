@@ -1,6 +1,6 @@
 package main;
 
-import domain.DomainController;
+import controllers.DomainController;
 import gui.MainScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;

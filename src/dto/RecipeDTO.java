@@ -3,7 +3,7 @@ package dto;
 import java.util.List;
 import java.util.Map;
 
-import domain.Recipe;
+import domain.recipes.Recipe;
 
 public record RecipeDTO(String name, String description, int cookingTime, Map<String, Integer> ingredientAmounts,
 		List<String> instructions) {

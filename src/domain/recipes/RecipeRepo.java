@@ -1,4 +1,4 @@
-package domain;
+package domain.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class RecipeRepo {
 	 * 
 	 * @param name The name of the Recipe
 	 * @return The Recipe object with the corresponding name
-	 * @throws NoSuchElementException when no recipe was found
+	 * @throws IllegalArgumentException when no recipe was found
 	 */
 	public Recipe getRecipe(String name) throws IllegalArgumentException {
 		try {
@@ -43,5 +43,8 @@ public class RecipeRepo {
 	/*
 	 * DELETE
 	 */
+	public void removeRecipe(Recipe r) {
+		recipes.remove(r);
+	}
 
 }
