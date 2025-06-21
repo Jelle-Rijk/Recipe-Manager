@@ -64,7 +64,7 @@ public class Recipe {
 		return description;
 	}
 
-	private void setDescription(String description) {
+	public final void setDescription(String description) {
 //		if (description.isBlank())
 //			description = null;
 		this.description = Optional.ofNullable(description);
@@ -74,7 +74,7 @@ public class Recipe {
 		return cookingTime;
 	}
 
-	private void setCookingTime(int cookingTime) {
+	public final void setCookingTime(int cookingTime) {
 		if (cookingTime < 0)
 			throw new IllegalArgumentException("Cooking time cannot be negative.");
 		this.cookingTime = cookingTime;
@@ -84,7 +84,7 @@ public class Recipe {
 		return ingredientAmounts;
 	}
 
-	private void setIngredientAmounts(Map<String, Integer> ingredients) {
+	public final void setIngredientAmounts(Map<String, Integer> ingredients) {
 		this.ingredientAmounts = ingredients;
 	}
 
@@ -92,7 +92,7 @@ public class Recipe {
 		return instructions;
 	}
 
-	private void setInstructions(List<String> instructions) {
+	public final void setInstructions(List<String> instructions) {
 		this.instructions = instructions;
 	}
 
