@@ -1,6 +1,6 @@
 package gui;
 
-import domain.DomainController;
+import controllers.DomainController;
 import dto.RecipeDTO;
 import javafx.scene.layout.BorderPane;
 
