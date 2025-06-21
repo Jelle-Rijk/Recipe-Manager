@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import domain.recipes.Recipe;
-import domain.recipes.RecipeImpl;
 
 public record RecipeDTO(String name, String description, int cookingTime, Map<String, Integer> ingredientAmounts,
 		List<String> instructions) {
@@ -15,7 +14,7 @@ public record RecipeDTO(String name, String description, int cookingTime, Map<St
 	}
 
 	public static Recipe convertToRecipe(RecipeDTO dto) {
-		return new RecipeImpl(dto.name(), dto.description(), dto.cookingTime(), dto.ingredientAmounts(),
+		return new Recipe(dto.name(), dto.description(), dto.cookingTime(), dto.ingredientAmounts(),
 				dto.instructions());
 	}
 }

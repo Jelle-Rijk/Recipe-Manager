@@ -15,10 +15,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import domain.recipes.RecipeImpl;
+import domain.recipes.Recipe;
 
 class RecipeTest {
-	private RecipeImpl r;
+	private Recipe r;
 
 	private static String DEFAULT_NAME = "Pasta Carbonara";
 	private static String DEFAULT_DESCRIPTION = "Homecooked Italian deliciousness";
@@ -44,7 +44,7 @@ class RecipeTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		r = new RecipeImpl(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COOKING_TIME, DEFAULT_INGREDIENTS,
+		r = new Recipe(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COOKING_TIME, DEFAULT_INGREDIENTS,
 				DEFAULT_INSTRUCTIONS);
 	}
 
@@ -64,7 +64,7 @@ class RecipeTest {
 	@NullAndEmptySource
 	@ValueSource(strings = { "", " ", "\t", "\n" })
 	void test_invalidName_throwsException(String name) {
-		assertThrows(IllegalArgumentException.class, () -> new RecipeImpl(name));
+		assertThrows(IllegalArgumentException.class, () -> new Recipe(name));
 	}
 
 }

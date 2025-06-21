@@ -2,13 +2,13 @@ package persistence.recipes;
 
 import java.util.Collection;
 
-import domain.recipes.RecipeImpl;
+import domain.recipes.Recipe;
 
 public interface RecipeService {
-	public Collection<RecipeImpl> loadRecipes();
+	public Collection<Recipe> loadRecipes();
 
-	public void saveRecipe(RecipeImpl r);
+	public void saveRecipe(Recipe r);
 
-	public void deleteRecipe(RecipeImpl r);
+	public void deleteRecipe(Recipe r);
 
 }
