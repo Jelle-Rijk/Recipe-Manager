@@ -18,7 +18,7 @@ public class MainScreen extends BorderPane {
 	private void buildTestGUI() {
 		RecipeController rc = dc.getRecipeController();
 		rc.addRecipe(null);
-		RecipeDTO recipe = dc.getRecipe("Pasta Carbonara");
-		setCenter(new RecipeScreen(recipe));
+		RecipeDTO recipe = rc.getRecipe("Pasta Carbonara");
+		setCenter(new RecipeView(recipe));
 	}
 }

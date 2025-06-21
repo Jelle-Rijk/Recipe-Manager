@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class RecipeScreen extends VBox {
+public class RecipeView extends VBox {
 
 	private Label title;
 	private Text description;
@@ -21,7 +21,7 @@ public class RecipeScreen extends VBox {
 
 	private final static Insets PADDING = new Insets(10);
 
-	public RecipeScreen(RecipeDTO recipe) {
+	public RecipeView(RecipeDTO recipe) {
 		this.recipe = recipe;
 		buildGUI();
 	}

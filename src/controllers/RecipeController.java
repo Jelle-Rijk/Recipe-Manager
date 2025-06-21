@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import domain.recipes.Recipe;
+import domain.recipes.RecipeImpl;
 import domain.recipes.RecipeRepo;
 import dto.RecipeDTO;
 
@@ -40,7 +41,7 @@ public class RecipeController {
 
 	public void addRecipe(RecipeDTO dto) {
 		setDefaults();
-		rRepo.addRecipe(new Recipe(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COOKING_TIME, DEFAULT_INGREDIENTS,
+		rRepo.addRecipe(new RecipeImpl(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COOKING_TIME, DEFAULT_INGREDIENTS,
 				DEFAULT_INSTRUCTIONS));
 	}
 
@@ -49,6 +50,21 @@ public class RecipeController {
 	 */
 	public RecipeDTO getRecipe(String name) {
 		return RecipeDTO.convertToDTO(rRepo.getRecipe(name));
+	}
+
+	/*
+	 * UPDATE
+	 */
+	public void updateTitle() {
+
+	}
+
+	public void updateDescription() {
+
+	}
+
+	public void updateCookingTime() {
+
 	}
 
 }
