@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class Recipe {
-	private final String name;
+	private String name;
 	private Optional<String> description;
 	private int cookingTime; // in minutes
 	private Map<String, Integer> ingredientAmounts;
