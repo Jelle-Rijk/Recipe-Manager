@@ -8,7 +8,7 @@ public abstract class Logger {
 	}
 
 	public static void log(String message) {
-		System.out.printf("[%s - %s]: %s", LocalTime.now(), message);
+		System.out.printf("[%s]: %s", LocalTime.now(), message);
 	}
 
 	public static void logError(String message, Object source) {
@@ -16,7 +16,7 @@ public abstract class Logger {
 	}
 
 	public static void logError(String message) {
-		System.err.printf("[%s - %s]: %s", LocalTime.now(), message);
+		System.err.printf("[%s]: %s", LocalTime.now(), message);
 	}
 
 }
