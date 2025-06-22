@@ -1,11 +1,11 @@
 package persistence.recipes;
 
-import java.util.Collection;
+import java.util.List;
 
 import domain.recipes.Recipe;
 
 public interface RecipeService {
-	public Collection<Recipe> loadRecipes();
+	public List<Recipe> loadRecipes();
 
 	public void saveRecipe(Recipe r);
 
