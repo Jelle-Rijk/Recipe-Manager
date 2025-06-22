@@ -6,15 +6,16 @@ import java.util.HashMap;
 import controllers.RecipeController;
 import dto.RecipeDTO;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-// TODO INPUT CONTROL
 public class AddRecipeScreen extends VBox {
 	private final RecipeController rc;
-	private final MainScreen prevScreen;
+	private final Stage stage;
 
 	private String title;
 	private String description;
@@ -24,11 +25,22 @@ public class AddRecipeScreen extends VBox {
 
 	private final static double SPACING = 10;
 
-	public AddRecipeScreen(RecipeController rc, MainScreen prevScreen) {
-		this.prevScreen = prevScreen;
+	public AddRecipeScreen(RecipeController rc) {
 		this.rc = rc;
+		this.stage = new Stage();
 		buildGUI();
 	}
+
+	/*
+	 * PUBLIC VOID
+	 */
+	public void show() {
+		Scene scene = new Scene(this);
+
+		stage.setScene(scene);
+		stage.setTitle("Edit recipe");
+		stage.show();
+	};
 
 	/*
 	 * BUILD GUI
@@ -46,7 +58,7 @@ public class AddRecipeScreen extends VBox {
 		btnSubmit.setOnAction(e -> submit());
 		btnSubmit.setDisable(true);
 		Button cancel = new Button("Cancel");
-		cancel.setOnAction(e -> returnToMainScreen());
+		cancel.setOnAction(e -> close());
 		HBox buttons = new HBox(btnSubmit, cancel);
 		getChildren().add(buttons);
 	}
@@ -109,12 +121,10 @@ public class AddRecipeScreen extends VBox {
 				new ArrayList<String>());
 		rc.addRecipe(dto);
 		rc.setCurrentRecipe(dto);
-		returnToMainScreen();
+		close();
 	}
 
-	private void returnToMainScreen() {
-		getScene().getWindow().setWidth(prevScreen.getWidth());
-		getScene().getWindow().setHeight(600);
-		getScene().setRoot(prevScreen);
+	private void close() {
+		stage.close();
 	}
 }

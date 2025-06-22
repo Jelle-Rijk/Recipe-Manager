@@ -2,7 +2,6 @@ package gui;
 
 import controllers.DomainController;
 import controllers.RecipeController;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
@@ -30,11 +29,8 @@ public class MainScreen extends BorderPane {
 	}
 
 	private void editRecipe(RecipeController rc) {
-		AddRecipeScreen screen = new AddRecipeScreen(rc, this);
-		Scene scene = getScene();
-		scene.setRoot(screen);
-		scene.getWindow().setWidth(screen.getWidth());
-		scene.getWindow().setHeight(screen.getHeight());
+		AddRecipeScreen screen = new AddRecipeScreen(rc);
+		screen.show();
 
 	}
 }
