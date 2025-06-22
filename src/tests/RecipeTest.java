@@ -54,7 +54,7 @@ class RecipeTest {
 	@Test
 	void test_defaultRecipe_ReturnsCorrectValues() {
 		assertEquals(DEFAULT_NAME, r.getName());
-		assertEquals(DEFAULT_DESCRIPTION, r.getDescription().get());
+		assertEquals(DEFAULT_DESCRIPTION, r.getDescription());
 		assertEquals(DEFAULT_COOKING_TIME, r.getCookingTime());
 		assertEquals(DEFAULT_INGREDIENTS, r.getIngredientAmounts());
 		assertEquals(DEFAULT_INSTRUCTIONS, r.getInstructions());
