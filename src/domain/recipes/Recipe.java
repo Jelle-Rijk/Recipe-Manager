@@ -1,15 +1,17 @@
 package domain.recipes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
-public class Recipe {
+public class Recipe implements Serializable {
+	private static final long serialVersionUID = 7368917163260696829L;
+
 	private String name;
-	private Optional<String> description;
+	private String description;
 	private int cookingTime; // in minutes
 	private Map<String, Integer> ingredientAmounts;
 	private List<String> instructions;
@@ -60,14 +62,14 @@ public class Recipe {
 	/*
 	 * GETTERS - SETTERS
 	 */
-	public Optional<String> getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
 	public final void setDescription(String description) {
 //		if (description.isBlank())
 //			description = null;
-		this.description = Optional.ofNullable(description);
+		this.description = description;
 	}
 
 	public int getCookingTime() {
