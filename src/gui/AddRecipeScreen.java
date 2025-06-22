@@ -1,6 +1,9 @@
 package gui;
 
-import controllers.DomainController;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import controllers.RecipeController;
 import dto.RecipeDTO;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,10 +15,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 // TODO INPUT CONTROL
-public class EditRecipeScreen extends VBox {
-	private final DomainController dc;
+public class AddRecipeScreen extends VBox {
+	private final RecipeController rc;
 	private final MainScreen prevScreen;
-	private final RecipeDTO oldRecipe;
 
 	private String title;
 	private String description;
@@ -23,13 +25,9 @@ public class EditRecipeScreen extends VBox {
 
 	private final static double SPACING = 10;
 
-	public EditRecipeScreen(RecipeDTO recipe, DomainController dc, MainScreen prevScreen) {
+	public AddRecipeScreen(RecipeController rc, MainScreen prevScreen) {
 		this.prevScreen = prevScreen;
-		this.dc = dc;
-		this.oldRecipe = recipe;
-		this.title = recipe.name();
-		this.description = recipe.description();
-		this.cookingTime = recipe.cookingTime();
+		this.rc = rc;
 		buildGUI();
 	}
 
@@ -40,7 +38,7 @@ public class EditRecipeScreen extends VBox {
 		setAlignment(Pos.CENTER);
 		setSpacing(SPACING);
 
-		Label title = new Label("Edit recipe");
+		Label title = new Label("Add recipe");
 		title.setStyle("-fx-font-size: 24; -fx-font-weight: bold;");
 
 		buildTitleEditor();
@@ -104,10 +102,10 @@ public class EditRecipeScreen extends VBox {
 	 * EVENT HANDLERS
 	 */
 	private void submit() {
-		RecipeDTO dto = new RecipeDTO(title, description, cookingTime, oldRecipe.ingredientAmounts(),
-				oldRecipe.instructions());
-		dc.getRecipeController().addRecipe(dto);
-		dc.getRecipeController().setCurrentRecipe(dto);
+		RecipeDTO dto = new RecipeDTO(title, description, cookingTime, new HashMap<String, Integer>(),
+				new ArrayList<String>());
+		rc.addRecipe(dto);
+		rc.setCurrentRecipe(dto);
 		returnToMainScreen();
 	}
 
