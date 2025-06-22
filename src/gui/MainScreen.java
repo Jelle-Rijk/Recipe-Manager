@@ -22,15 +22,6 @@ public class MainScreen extends BorderPane {
 
 		RecipeController rc = dc.getRecipeController();
 		setCenter(new RecipeView(rc));
-		Button editRecipe = new Button("Edit recipe");
-		editRecipe.setOnAction(e -> editRecipe(rc));
-		setBottom(editRecipe);
 		setLeft(new RecipePicker(rc));
-	}
-
-	private void editRecipe(RecipeController rc) {
-		AddRecipeScreen screen = new AddRecipeScreen(rc);
-		screen.show();
-
 	}
 }

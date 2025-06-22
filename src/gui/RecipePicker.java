@@ -3,6 +3,7 @@ package gui;
 import controllers.RecipeController;
 import dto.RecipeDTO;
 import enums.ObserverEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -24,7 +25,13 @@ public class RecipePicker extends VBox implements Subscriber {
 		recipeList = new ListView<String>();
 		recipeList.setOnMouseClicked(e -> rc.setCurrentRecipe(recipeList.getSelectionModel().getSelectedItem()));
 
-		getChildren().addAll(pick, recipeList);
+		Button addNewRecipe = new Button("Add new recipe");
+		addNewRecipe.setOnAction(e -> {
+			AddRecipeScreen screen = new AddRecipeScreen(rc);
+			screen.show();
+		});
+
+		getChildren().addAll(pick, recipeList, addNewRecipe);
 		update(ObserverEvent.LIST_CHANGE);
 	}
 
