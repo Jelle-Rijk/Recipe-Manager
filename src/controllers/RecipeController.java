@@ -88,6 +88,15 @@ public class RecipeController implements Publisher {
 		return rRepo.getRecipes().stream().map(r -> RecipeDTO.convertToDTO(r)).toList();
 	}
 
+	public boolean isNameAvailable(String name) {
+		try {
+			rRepo.getRecipe(name);
+			return false;
+		} catch (IllegalArgumentException iae) {
+			return true;
+		}
+	}
+
 	/*
 	 * PUBLISHER INTERFACE
 	 */

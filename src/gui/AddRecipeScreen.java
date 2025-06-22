@@ -8,10 +8,7 @@ import dto.RecipeDTO;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 // TODO INPUT CONTROL
@@ -22,6 +19,8 @@ public class AddRecipeScreen extends VBox {
 	private String title;
 	private String description;
 	private int cookingTime;
+
+	private Button btnSubmit;
 
 	private final static double SPACING = 10;
 
@@ -41,66 +40,70 @@ public class AddRecipeScreen extends VBox {
 		Label title = new Label("Add recipe");
 		title.setStyle("-fx-font-size: 24; -fx-font-weight: bold;");
 
-		buildTitleEditor();
-		buildDescriptionEditor();
-		buildCookingTimeEditor();
+		buildInfoHeaderEditor();
 
-		Button submit = new Button("Submit");
-		submit.setOnAction(e -> submit());
+		btnSubmit = new Button("Submit");
+		btnSubmit.setOnAction(e -> submit());
+		btnSubmit.setDisable(true);
 		Button cancel = new Button("Cancel");
 		cancel.setOnAction(e -> returnToMainScreen());
-
-		getChildren().addAll(submit, cancel);
-
+		HBox buttons = new HBox(btnSubmit, cancel);
+		getChildren().add(buttons);
 	}
 
-	private void buildTitleEditor() {
-		HBox editor = buildTextfieldEditor("Recipe name");
-		if (editor.getChildren().getLast() instanceof TextField txf) {
-			txf.setOnKeyTyped(e -> this.title = txf.getText());
-		}
-	}
+	private void buildInfoHeaderEditor() {
+		FieldInput nameInput = new FieldInput("Recipe name", (title) -> setTitle(title));
+		FieldInput descriptionInput = new FieldInput("Description", (desc) -> setDescription(desc));
+		FieldInput cookingTimeInput = new FieldInput("Cooking time", (cookingTime) -> setCookingTime(cookingTime));
 
-	private void buildDescriptionEditor() {
-		HBox editor = buildTextfieldEditor("Description");
-		if (editor.getChildren().getLast() instanceof TextField txf) {
-			txf.setOnKeyTyped(e -> this.description = txf.getText());
-		}
-	}
+		getChildren().addAll(nameInput, descriptionInput, cookingTimeInput);
 
-	private void buildCookingTimeEditor() {
-		HBox editor = buildTextfieldEditor("Cooking time");
-		if (editor.getChildren().getLast() instanceof TextField txf) {
-			txf.setOnKeyTyped(e -> {
-				this.cookingTime = Integer.parseInt(txf.getText());
-			});
-		}
-	}
-
-	/**
-	 * Build an HBox with a label, region and a textfield
-	 * 
-	 * @param label
-	 * @return HBox with a label, region and textfield
-	 */
-	private HBox buildTextfieldEditor(String label) {
-		HBox editor = new HBox();
-		editor.setMaxWidth(300);
-		Label lblEditor = new Label(label);
-		Region rgn = new Region();
-		HBox.setHgrow(rgn, Priority.ALWAYS);
-
-		TextField txfEditor = new TextField();
-		txfEditor.setPromptText(String.format("Please enter %s", label.toLowerCase()));
-
-		editor.getChildren().addAll(lblEditor, rgn, txfEditor);
-		getChildren().add(editor);
-		return editor;
 	}
 
 	/*
 	 * EVENT HANDLERS
 	 */
+	private void setTitle(String title) {
+		try {
+			if (title == null || title.isBlank())
+				throw new IllegalArgumentException("Every recipe needs a name");
+			if (!rc.isNameAvailable(title))
+				throw new IllegalArgumentException("A recipe with that name already exists");
+			this.title = title;
+			updateSubmitButton();
+		} catch (IllegalArgumentException iae) {
+			this.title = null;
+			updateSubmitButton();
+			throw iae;
+		}
+	}
+
+	private void setDescription(String description) {
+		this.description = description;
+	}
+
+	private void setCookingTime(String cookingTime) {
+		try {
+			int time = cookingTime == null || cookingTime.isBlank() ? 0 : Integer.parseInt(cookingTime.trim());
+			if (time < 0)
+				throw new IllegalArgumentException("Cooking time cannot be negative");
+			this.cookingTime = time;
+		} catch (NumberFormatException e) {
+			this.cookingTime = -1;
+			updateSubmitButton();
+			throw new IllegalArgumentException("Please enter an integer");
+		} catch (IllegalArgumentException iae) {
+			this.cookingTime = -1;
+			updateSubmitButton();
+			throw iae;
+		}
+		updateSubmitButton();
+	}
+
+	private void updateSubmitButton() {
+		btnSubmit.setDisable(title == null || cookingTime == -1);
+	}
+
 	private void submit() {
 		RecipeDTO dto = new RecipeDTO(title, description, cookingTime, new HashMap<String, Integer>(),
 				new ArrayList<String>());
