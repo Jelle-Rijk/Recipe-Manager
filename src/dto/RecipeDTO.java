@@ -9,8 +9,12 @@ public record RecipeDTO(String name, String description, int cookingTime, Map<St
 		List<String> instructions) {
 
 	public static RecipeDTO convertToDTO(Recipe r) {
-		return new RecipeDTO(r.getName(), r.getDescription().orElse("N/A"), r.getCookingTime(),
-				r.getIngredientAmounts(), r.getInstructions());
+		String description = r.getDescription();
+		if (description == null || description.isBlank())
+			description = "N/A";
+
+		return new RecipeDTO(r.getName(), description, r.getCookingTime(), r.getIngredientAmounts(),
+				r.getInstructions());
 	}
 
 	public static Recipe convertToRecipe(RecipeDTO dto) {

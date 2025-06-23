@@ -2,6 +2,7 @@ package gui;
 
 import controllers.RecipeController;
 import dto.RecipeDTO;
+import enums.ObserverEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -43,7 +44,9 @@ public class RecipeView extends VBox implements Subscriber {
 		fPane.getChildren().addAll(ingredients, instructions);
 
 		getChildren().addAll(header, fPane);
-		update();
+
+		if (rc.getCurrentRecipe() != null)
+			update();
 	}
 
 	private HBox buildHeader() {
@@ -104,7 +107,7 @@ public class RecipeView extends VBox implements Subscriber {
 	}
 
 	@Override
-	public void update() {
+	public void update(ObserverEvent eventType) {
 		RecipeDTO recipe = rc.getCurrentRecipe();
 
 		title.setText(recipe.name());
@@ -128,5 +131,4 @@ public class RecipeView extends VBox implements Subscriber {
 			stepNumber++;
 		}
 	}
-
 }

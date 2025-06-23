@@ -1,13 +1,13 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import domain.recipes.Recipe;
 import domain.recipes.RecipeRepo;
 import dto.RecipeDTO;
+import enums.ObserverEvent;
 import utils.Publisher;
 import utils.Subscriber;
 
@@ -19,31 +19,6 @@ public class RecipeController implements Publisher {
 	public RecipeController() {
 		currentRecipeSubscribers = new ArrayList<Subscriber>();
 		rRepo = new RecipeRepo();
-		setDefaults();
-		setCurrentRecipe("Pasta Carbonara");
-	}
-
-	private static String DEFAULT_NAME = "Pasta Carbonara";
-	private static String DEFAULT_DESCRIPTION = "Homecooked Italian deliciousness";
-	private static int DEFAULT_COOKING_TIME = 90;
-	private static Map<String, Integer> DEFAULT_INGREDIENTS;
-	private static List<String> DEFAULT_INSTRUCTIONS;
-
-	private void setDefaults() {
-		DEFAULT_INGREDIENTS = new HashMap<String, Integer>();
-		DEFAULT_INGREDIENTS.put("Bacon", 300);
-		DEFAULT_INGREDIENTS.put("Spaghetti", 200);
-		DEFAULT_INGREDIENTS.put("Cheese", 100);
-		DEFAULT_INGREDIENTS.put("Egg", 1);
-
-		DEFAULT_INSTRUCTIONS = new ArrayList<String>();
-		DEFAULT_INSTRUCTIONS.add("Cook the pasta and bake the bacon.");
-		DEFAULT_INSTRUCTIONS.add("Grate the cheese and mix it with the egg.");
-		DEFAULT_INSTRUCTIONS.add("Add pasta to bacon and pour egg on it.");
-		DEFAULT_INSTRUCTIONS
-				.add("Whisk thoroughly and pour some pasta water over the spaghetti until you get a smooth sauce.");
-		addRecipe(new RecipeDTO(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COOKING_TIME, DEFAULT_INGREDIENTS,
-				DEFAULT_INSTRUCTIONS));
 	}
 
 	public void addRecipe(RecipeDTO dto) {
@@ -80,6 +55,8 @@ public class RecipeController implements Publisher {
 	}
 
 	public RecipeDTO getCurrentRecipe() {
+		if (currentRecipe == null)
+			return null;
 		return RecipeDTO.convertToDTO(currentRecipe);
 	}
 
@@ -102,23 +79,52 @@ public class RecipeController implements Publisher {
 		return RecipeDTO.convertToDTO(rRepo.getRecipe(name));
 	}
 
+	/**
+	 * Returns a collection of RecipeDTOs for all recipes in the RecipeRepo
+	 * 
+	 * @return list of RecipeDTOs
+	 */
+	public Collection<RecipeDTO> getAllRecipes() {
+		return rRepo.getRecipes().stream().map(r -> RecipeDTO.convertToDTO(r)).toList();
+	}
+
+	public boolean isNameAvailable(String name) {
+		try {
+			rRepo.getRecipe(name);
+			return false;
+		} catch (IllegalArgumentException iae) {
+			return true;
+		}
+	}
+
 	/*
 	 * PUBLISHER INTERFACE
 	 */
 
 	@Override
-	public void subscribe(Subscriber sub) {
+	public void subscribe(Subscriber sub, ObserverEvent eventType) {
 		currentRecipeSubscribers.add(sub);
 	}
 
 	@Override
-	public void unsubscribe(Subscriber sub) {
+	public void unsubscribe(Subscriber sub, ObserverEvent eventType) {
 		currentRecipeSubscribers.remove(sub);
 	}
 
 	@Override
-	public void notifySubscribers() {
+	public void notifySubscribers(ObserverEvent eventType) {
 		currentRecipeSubscribers.forEach(sub -> sub.update());
+	}
+
+	/*
+	 * REPO PUBLISHER INTERFACE
+	 */
+	public void subscribeToRepo(Subscriber sub) {
+		rRepo.subscribe(sub);
+	}
+
+	public void unsubscribeFromRepo(Subscriber sub) {
+		rRepo.unsubscribe(sub);
 	}
 
 }
