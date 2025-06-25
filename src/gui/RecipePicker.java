@@ -6,6 +6,7 @@ import enums.ObserverEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import utils.Subscriber;
 
@@ -25,13 +26,20 @@ public class RecipePicker extends VBox implements Subscriber {
 		recipeList = new ListView<String>();
 		recipeList.setOnMouseClicked(e -> rc.setCurrentRecipe(recipeList.getSelectionModel().getSelectedItem()));
 
+		HBox buttons = new HBox();
 		Button addNewRecipe = new Button("Add new recipe");
 		addNewRecipe.setOnAction(e -> {
 			AddRecipeScreen screen = new AddRecipeScreen(rc);
 			screen.show();
 		});
+		Button editRecipe = new Button("Edit recipe");
+		editRecipe.setOnAction(e -> {
+			EditRecipeScreen screen = new EditRecipeScreen(rc);
+			screen.show();
+		});
+		buttons.getChildren().addAll(addNewRecipe, editRecipe);
 
-		getChildren().addAll(pick, recipeList, addNewRecipe);
+		getChildren().addAll(pick, recipeList, buttons);
 		update(ObserverEvent.LIST_CHANGE);
 	}
 
@@ -45,8 +53,10 @@ public class RecipePicker extends VBox implements Subscriber {
 			rc.getAllRecipes().forEach(dto -> recipeList.getItems().add(dto.name()));
 		}
 		RecipeDTO currentRecipe = rc.getCurrentRecipe();
-		if (currentRecipe != null)
+		if (currentRecipe != null) {
 			recipeList.getSelectionModel().select(currentRecipe.name());
+			System.out.printf("Current recipe: %s", currentRecipe.name());
+		}
 	}
 
 }

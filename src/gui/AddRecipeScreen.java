@@ -14,13 +14,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class AddRecipeScreen extends VBox {
-	private final RecipeController rc;
+	protected final RecipeController rc;
 	private final Stage stage;
 
-	private String title;
+	protected String title;
 	private String description;
 	private int cookingTime;
 
+	protected FieldInput nameInput;
+	protected FieldInput descriptionInput;
+	protected FieldInput cookingTimeInput;
+	protected HBox buttons;
 	private Button btnSubmit;
 
 	private final static double SPACING = 10;
@@ -59,14 +63,14 @@ public class AddRecipeScreen extends VBox {
 		btnSubmit.setDisable(true);
 		Button cancel = new Button("Cancel");
 		cancel.setOnAction(e -> close());
-		HBox buttons = new HBox(btnSubmit, cancel);
+		buttons = new HBox(btnSubmit, cancel);
 		getChildren().add(buttons);
 	}
 
-	private void buildInfoHeaderEditor() {
-		FieldInput nameInput = new FieldInput("Recipe name", (title) -> setTitle(title));
-		FieldInput descriptionInput = new FieldInput("Description", (desc) -> setDescription(desc));
-		FieldInput cookingTimeInput = new FieldInput("Cooking time", (cookingTime) -> setCookingTime(cookingTime));
+	protected void buildInfoHeaderEditor() {
+		nameInput = new FieldInput("Recipe name", (title) -> setTitle(title));
+		descriptionInput = new FieldInput("Description", (desc) -> setDescription(desc));
+		cookingTimeInput = new FieldInput("Cooking time", (cookingTime) -> setCookingTime(cookingTime));
 
 		getChildren().addAll(nameInput, descriptionInput, cookingTimeInput);
 
@@ -75,12 +79,14 @@ public class AddRecipeScreen extends VBox {
 	/*
 	 * EVENT HANDLERS
 	 */
-	private void setTitle(String title) {
+	protected void setTitle(String title) {
 		try {
 			if (title == null || title.isBlank())
 				throw new IllegalArgumentException("Every recipe needs a name");
-			if (!rc.isNameAvailable(title))
+			if (!rc.isNameAvailable(title)
+					&& !(this instanceof EditRecipeScreen ers && title.equals(ers.originalRecipe.name()))) {
 				throw new IllegalArgumentException("A recipe with that name already exists");
+			}
 			this.title = title;
 			updateSubmitButton();
 		} catch (IllegalArgumentException iae) {
@@ -112,11 +118,11 @@ public class AddRecipeScreen extends VBox {
 		updateSubmitButton();
 	}
 
-	private void updateSubmitButton() {
+	protected void updateSubmitButton() {
 		btnSubmit.setDisable(title == null || cookingTime == -1);
 	}
 
-	private void submit() {
+	protected void submit() {
 		RecipeDTO dto = new RecipeDTO(title, description, cookingTime, new HashMap<String, Integer>(),
 				new ArrayList<String>());
 		rc.addRecipe(dto);
@@ -124,7 +130,7 @@ public class AddRecipeScreen extends VBox {
 		close();
 	}
 
-	private void close() {
+	protected void close() {
 		stage.close();
 	}
 }

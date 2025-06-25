@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -18,8 +19,16 @@ public class FieldInput extends HBox implements Setter<String> {
 		buildGUI();
 	}
 
+	public void setInput(String input) {
+		this.input.setText(input);
+	}
+
 	private void buildGUI() {
+		setPadding(new Insets(0, 0, 0, 60));
+		setSpacing(5);
+		setPrefWidth(500);
 		Label lblName = new Label(name);
+		lblName.setPrefWidth(100);
 
 		input = new TextField();
 		input.setOnKeyTyped((evt) -> set(input.getText()));
